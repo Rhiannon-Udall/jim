@@ -34,7 +34,8 @@ class Prior(Distribution):
         self.transforms = []
         for name in naming:
             if name in transforms:
-                self.transforms.append(transforms[name])
+
+                self.transforms.append((name, transforms[name]))
             else:
                 self.transforms.append((name,lambda x: x))
 
@@ -100,5 +101,5 @@ class Uniform(Prior):
         return samples # TODO: remember to cast this to a named array
 
     def log_prob(self, x: Array) -> Float:
-        output = jax.lax.cond(not jnp.where((x>=self.xmax) | (x<=self.xmin))[0].any(), lambda: 0., lambda: -jnp.inf)
+        output = jnp.where((x<=self.xmax) & (x>=self.xmin), x, -jnp.inf).sum()
         return output + jnp.sum(jnp.log(1./(self.xmax-self.xmin))) 

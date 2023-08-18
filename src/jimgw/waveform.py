@@ -1,5 +1,5 @@
 from jaxtyping import Array
-from ripple.waveforms.IMRPhenomD import gen_IMRPhenomD
+from ripple.waveforms.IMRPhenomD import gen_IMRPhenomD_hphc
 import jax.numpy as jnp
 from abc import ABC
 
@@ -23,7 +23,7 @@ class RippleIMRPhenomD(Waveform):
         ra = params['ra']
         dec = params['dec']
         theta = [params['M_c'], params['eta'], params['s1_z'], params['s2_z'], params['d_L'], 0, params['phase_c'], params['iota'], params['psi'], ra, dec]
-        hp, hc = gen_IMRPhenomD(frequency, theta, self.f_ref)
+        hp, hc = gen_IMRPhenomD_hphc(frequency, theta, self.f_ref)
         output['p'] = hp
         output['c'] = hc
         return output
