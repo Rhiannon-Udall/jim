@@ -101,5 +101,6 @@ class Uniform(Prior):
         return samples # TODO: remember to cast this to a named array
 
     def log_prob(self, x: Array) -> Float:
-        output = jnp.where((x<=self.xmax) & (x>=self.xmin), x, -jnp.inf).sum()
+        #output = jnp.where((x<=self.xmax) & (x>=self.xmin), x, -jnp.inf).sum()
+        output = jnp.sum(jnp.where((x>=self.xmax) | (x<=self.xmin), jnp.zeros_like(x)-jnp.inf, jnp.zeros_like(x)))
         return output + jnp.sum(jnp.log(1./(self.xmax-self.xmin))) 
