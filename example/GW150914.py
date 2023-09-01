@@ -7,6 +7,8 @@ from jimgw.prior import Uniform
 import jax.numpy as jnp
 import jax
 
+jax.config.update("jax_enable_x64", True)
+
 ###########################################
 ########## First we grab data #############
 ###########################################
@@ -31,8 +33,8 @@ prior = Uniform(
     xmax = [80., 1., 1., 1., 2000., 0.05, 2*jnp.pi, 1., jnp.pi, 2*jnp.pi, 1.],
     naming = ["M_c", "q", "s1_z", "s2_z", "d_L", "t_c", "phase_c", "cos_iota", "psi", "ra", "sin_dec"],
     transforms = {"q": lambda q: q/(1+q)**2,
-                 "iota": lambda iota: jnp.arccos(jnp.arcsin(jnp.sin(iota/2*jnp.pi))*2/jnp.pi),
-                 "dec": lambda dec: jnp.arcsin(jnp.arcsin(jnp.sin(dec/2*jnp.pi))*2/jnp.pi)} # sin and arcsin are periodize cos_iota and sin_dec
+                 "cos_iota": lambda iota: jnp.arccos(jnp.arcsin(jnp.sin(iota/2*jnp.pi))*2/jnp.pi),
+                 "sin_dec": lambda dec: jnp.arcsin(jnp.arcsin(jnp.sin(dec/2*jnp.pi))*2/jnp.pi)} # sin and arcsin are periodize cos_iota and sin_dec
 )
 
 mass_matrix = jnp.eye(11)
